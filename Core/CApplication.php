@@ -20,7 +20,7 @@ class CApplication{
 		
 		$control=strtolower(isset($_GET['c'])?$_GET['c']:'index');
 		$action=strtolower(isset($_GET['a'])?$_GET['a']:'index');
-		
+        $this->loadGlobalData();//加载global目录下的所有php文件
 		require APP_PATH."/controller/$control.class.php";
 		
 		$ctrl=new $control($control,$action);
@@ -64,6 +64,14 @@ class CApplication{
         {
             include $file;
         }
+    }
+
+    public function loadGlobalData(){
+        $dir=APP_PATH."/global/";
+        foreach (glob($dir."*.php") as $file) {
+            include $file;
+        }
+
     }
 	
 	

@@ -8,7 +8,6 @@ class cMysql
 	private $port;
 
     protected $dbname;
-    protected $where="";
     protected $stmt;
 	
 	function __construct($dbcfg="db")
@@ -26,7 +25,6 @@ class cMysql
 			$this->db=new PDO($dsn,$this->dbuser,$this->dbpasw);
 		}catch(PDOException $e){
 			echo '数据库连接失败:',$e->getMessage();
-			exit;
 		}
 		$this->db->query("set names utf8");
 
@@ -39,6 +37,7 @@ class cMysql
         return $result;
     }
 
+    //执行一条sql语句，并且获得所有结果
     public function sqlquery($sql)
     {
         $stmt=$this->db->query($sql);
@@ -52,6 +51,7 @@ class cMysql
         return $result;
     }
 
+    //执行一条sql语句，获得单行结果
     public function sqlqueryone($sql)
     {
         $stmt=$this->db->query($sql);
@@ -64,6 +64,7 @@ class cMysql
         return $result;
     }
 
+    //执行一条sql语句，获得一列的值
     public function sqlqueryscalar($sql,$column=0){
         $stmt=$this->db->query($sql);
 
@@ -73,14 +74,6 @@ class cMysql
         }
         $result=$stmt->fetchColumn($column);
         return $result;
-    }
-
-    public function addCondition($param){
-        if($this->where==''){
-           $this->where="where $param ";
-        }else{
-            $this->where.="and $param ";
-        }
     }
 
     public function pre($sql){
@@ -93,6 +86,19 @@ class cMysql
 
     public function bindStrParam($key,$val){
         $this->stmt->bindParam($key,$val,PDO::PARAM_STR);
+    }
+
+    //开始事务
+    public function beginTransaction(){
+        $this->db->beginTransaction();
+    }
+    //提交事务
+    public function commit(){
+        $this->db->commit();
+    }
+    //回滚事务
+    public function roolBack(){
+        $this->db->rollBack();
     }
 
     public function __call($method,$args) {

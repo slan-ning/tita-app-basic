@@ -6,7 +6,7 @@
  * Time: 下午1:44
  * To change this template use File | Settings | File Templates.
  */
-class Model extends cMysql
+class Model extends CMysql
 {
     private $attributes;
     private $table;
