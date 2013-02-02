@@ -1,5 +1,5 @@
 <?php 
-class cMysql
+class CMysql
 {
 	private $db;
 	protected $dbhost;
