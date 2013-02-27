@@ -17,11 +17,11 @@ class BaseController {
 		$this->$method();
 	}
 	
-	private function assign($name,$value=''){
+	protected function assign($name,$value=''){
 		$this->view->assign($name,$value);
 	}
 	
-	private function display($tpl=""){
+	protected function display($tpl=""){
 		$tplname=($tpl=="")?$this->action:$tpl;
 		
 		$this->view->display($tplname,$this->control,$this->layout );
