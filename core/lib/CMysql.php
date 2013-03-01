@@ -101,6 +101,10 @@ class CMysql
         $this->db->rollBack();
     }
 
+    public function lastInsertId(){
+        return $this->db->lastInsertId();
+    }
+
     public function __call($method,$args) {
         if(in_array(strtolower($method),array('fetch','fetchAll','execute','fetchColumn','rowCount'),true)) {
             return $this->stmt->$method;

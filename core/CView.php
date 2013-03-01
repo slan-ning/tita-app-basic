@@ -2,8 +2,11 @@
 class CView {
 
 	private $parm=array();
+    private $control;
+
 	
-	public function __construct(){
+	public function __construct(&$control){
+        $this->control=$control;
 	}
 	
 	public function assign($name,$value){
@@ -37,5 +40,9 @@ class CView {
 		}
 		
 	}
+
+    public function __get($var){
+        return $this->control->$var;
+    }
 
 }

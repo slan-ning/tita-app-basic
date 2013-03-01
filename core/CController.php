@@ -8,7 +8,7 @@ class BaseController {
 	function __construct($control,$action){
 		$this->control=$control;
 		$this->action=$action;
-		$this->view=new CView();
+		$this->view=new CView($this);
 
 	}
 	
@@ -23,7 +23,6 @@ class BaseController {
 	
 	protected function display($tpl=""){
 		$tplname=($tpl=="")?$this->action:$tpl;
-		
 		$this->view->display($tplname,$this->control,$this->layout );
 	}
 
