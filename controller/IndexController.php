@@ -6,7 +6,7 @@
  * Time: 上午11:49
  * To change this template use File | Settings | File Templates.
  */
-class index extends Controller
+class IndexController extends Controller
 {
     public function actionIndex(){
         echo 'meltsnow is a funny frame</br>';

@@ -23,7 +23,8 @@ class BaseController {
 	
 	protected function display($tpl=""){
 		$tplname=($tpl=="")?$this->action:$tpl;
-		$this->view->display($tplname,$this->control,$this->layout );
+        $classname=strtolower(substr($this->control,0,strpos($this->control,'Controller')));
+		$this->view->display($tplname,$classname,$this->layout );
 	}
 
 	//判断变量是否提交过来

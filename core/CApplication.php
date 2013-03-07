@@ -19,9 +19,11 @@ class CApplication{
 		$this->config= require APP_PATH . '/config.php';
 		
 		$control=strtolower(isset($_GET['c'])?$_GET['c']:'index');
+        $control=ucfirst($control)."Controller";
 		$action=strtolower(isset($_GET['a'])?$_GET['a']:'index');
+
         $this->loadGlobalData();//加载global目录下的所有php文件
-		require APP_PATH."/controller/$control.class.php";
+		require APP_PATH."/controller/$control.php";
 		
 		$ctrl=new $control($control,$action);
 
