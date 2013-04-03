@@ -4,6 +4,7 @@ class BaseController {
 	protected $control;
 	protected $action;
 	protected $layout="main";
+    public $widgetPointer='';
 	
 	function __construct($control,$action){
 		$this->control=$control;
@@ -26,6 +27,12 @@ class BaseController {
         $classname=strtolower(substr($this->control,0,strpos($this->control,'Controller')));
 		$this->view->display($tplname,$classname,$this->layout );
 	}
+
+    protected function widgetDisplay($tpl=''){
+        $tplname=($tpl=='')?$this->widgetPointer:$tpl;
+        $classname=strtolower(substr($this->control,0,strpos($this->control,'Controller')));
+        $this->view->display($tplname,$classname,'');
+    }
 
 	//判断变量是否提交过来
 	protected function checkVarNull($ary)

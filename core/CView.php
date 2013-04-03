@@ -19,10 +19,16 @@ class CView {
 		}
 	}
 
-    public function widget($file){
-        extract($this->parm,EXTR_OVERWRITE );
-        if(is_file(APP_PATH."/view/widget/$file.php"))
-            include APP_PATH."/view/widget/$file.php";
+    public function widget($func,$control=''){
+        $widgetControl=$this->control;
+        if($control!=''){
+            $controlName=ucfirst($control)."Controller";
+            require(APP_PATH."/controller/".$controlName.".php");
+            $widgetControl=new $controlName();
+        }
+        $this->control->widgetPointer=$func;
+        $func="widget".$func;
+        $widgetControl->$func();
     }
 	
 	public function display($tpl,$classname,$lay){

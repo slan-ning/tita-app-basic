@@ -15,6 +15,7 @@ class CApplication{
 	
 	public function run()
 	{
+        $this->loadGlobalData();//加载global目录下的所有php文件
 		$this->registerAutoLoad();
 		$this->config= require APP_PATH . '/config.php';
 		
@@ -22,7 +23,6 @@ class CApplication{
         $control=ucfirst($control)."Controller";
 		$action=strtolower(isset($_GET['a'])?$_GET['a']:'index');
 
-        $this->loadGlobalData();//加载global目录下的所有php文件
 		require APP_PATH."/controller/$control.php";
 		
 		$ctrl=new $control($control,$action);
