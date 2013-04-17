@@ -104,7 +104,7 @@ class Model extends CMysql
     }
 
     public function save(){
-        $keys=implode(',',array_keys($this->attributes));
+        $keys="`".implode('`,`',array_keys($this->attributes))."`";
 
         $vals=array_values($this->attributes);
         foreach($vals as &$v){
@@ -137,7 +137,7 @@ class Model extends CMysql
 
     //根据条件获得一个实例
     public function find($param){
-        $keys=implode(',',array_keys($this->attributes));
+        $keys="`".implode("`,`",array_keys($this->attributes))."`";
         if(is_numeric($param))
         {
             $sql="select $keys from ".$this->table." where ".$this->prikey."=$param";
