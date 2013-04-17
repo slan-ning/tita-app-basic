@@ -21,7 +21,6 @@ class CView {
 
     public function widget($func,$control=''){
         $widgetControl=$this->control;
-        $name=get_class($this->control);
 
         if($control!=''){
             $controlName=ucfirst($control)."Controller";
@@ -29,11 +28,11 @@ class CView {
 
             if($thisControllerName!=$controlName){
                 require(APP_PATH."/controller/".$controlName.".php");
-                $widgetControl=new $controlName();
+                $widgetControl=new $controlName($controlName,$func);
             }
 
         }
-        $this->control->widgetPointer=$func;
+        $widgetControl->widgetPointer=$func;
         $func="widget".$func;
         $widgetControl->$func();
     }

@@ -30,7 +30,7 @@ class Model extends CMysql
         parent::__construct();
         $this->table=$tablename;
         //获得所有的字段
-        $sql="desc ".$this->table;
+        $sql="desc `".$this->table."`";
         $field=$this->sqlquery($sql);
 
         foreach($field as $val){
@@ -50,14 +50,14 @@ class Model extends CMysql
             $orders=empty($this->_order)?'':('order by '.$this->_order);
             $groups=empty($this->_group)?'':('group by '.$this->_group);
 
-            $sql="select $fields from ".$this->table." $wheres $orders $groups $limits";
+            $sql="select $fields from `".$this->table."` $wheres $orders $groups $limits";
 
             $data=$this->sqlquery($sql);
             return $data;
         }elseif(is_numeric($pk)){
             $fields=empty($this->_field)?'*':$this->_field;
             $wheres="where ".$this->prikey."=$pk";
-            $sql="select $fields from ".$this->table." $wheres ";
+            $sql="select $fields from `".$this->table."` $wheres ";
             return $this->sqlqueryone($sql);
         }
     }
@@ -72,11 +72,11 @@ class Model extends CMysql
             if($wheres==""&& $limits="" &&$sign=false){
                 return false;
             }
-            $sql="delete from ".$this->table." $wheres $limits";
+            $sql="delete from `".$this->table."` $wheres $limits";
             return $this->sqlexec($sql);
         }elseif(is_numeric($pk)){
             $wheres="where ".$this->prikey."=$pk";
-            $sql="delete from ".$this->table." $wheres limit 1";
+            $sql="delete from `".$this->table."` $wheres limit 1";
             return $this->sqlexec($sql);
         }
 
@@ -94,11 +94,11 @@ class Model extends CMysql
             if($wheres==""&& $limits="" &&$sign=false){
                 return false;
             }
-            $sql="update ".$this->table." set $sets $wheres $limits";
+            $sql="update `".$this->table."` set $sets $wheres $limits";
             return $this->sqlexec($sql);
         }elseif(is_numeric($pk)){
             $wheres="where ".$this->prikey."=$pk";
-            $sql="update ".$this->table." set $sets $wheres limit 1";
+            $sql="update `".$this->table."` set $sets $wheres limit 1";
             return $this->sqlqueryone($sql);
         }
     }
@@ -115,7 +115,7 @@ class Model extends CMysql
         $values=implode(',',$vals);
 
         if($this->isNew){
-            $sql="Insert into ".$this->table." ($keys) values($values)";
+            $sql="Insert into `".$this->table."` ($keys) values($values)";
             return $this->sqlexec($sql);
         }else{
             $upvalue="";
@@ -127,10 +127,10 @@ class Model extends CMysql
                 if(!is_numeric($v)){
                     $v='\''.$v.'\'';
                 }
-                $upvalue.="$key=$v";
+                $upvalue.="`$key`=$v";
                 if($i!=$num) $upvalue.=', ';
             }
-            $sql="update ".$this->table." set $upvalue where ".$this->prikey."=".$this->attributes[$this->prikey];
+            $sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$this->attributes[$this->prikey];
             return $this->sqlexec($sql);
         }
     }
@@ -140,9 +140,9 @@ class Model extends CMysql
         $keys="`".implode("`,`",array_keys($this->attributes))."`";
         if(is_numeric($param))
         {
-            $sql="select $keys from ".$this->table." where ".$this->prikey."=$param";
+            $sql="select $keys from `".$this->table."` where ".$this->prikey."=$param";
         }else{
-            $sql="select $keys from ".$this->table." where $param limit 1";
+            $sql="select $keys from `".$this->table."` where $param limit 1";
         }
 
         $data=$this->sqlqueryone($sql);
