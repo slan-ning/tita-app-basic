@@ -34,7 +34,10 @@ class CView {
         }
         $widgetControl->widgetPointer=$func;
         $func="widget".$func;
-        $widgetControl->$func();
+
+        if($widgetControl->beforeAction()){
+        	$widgetControl->$func();
+        }
     }
 	
 	public function display($tpl,$classname,$lay){

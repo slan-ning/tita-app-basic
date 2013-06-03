@@ -8,11 +8,11 @@
  */
 class CPage
 {
-    private $dataCount;//总的数据长度
-    private $pageSize;//页面显示数据长度
-    private $pageNum;//当前页
-    private $pageCount;//页面数
-    private $pageUrl;
+    public $dataCount;//总的数据长度
+    public $pageSize;//页面显示数据长度
+    public $pageNum;//当前页
+    public $pageCount;//页面数
+    public $pageUrl;
 
     function __construct($dataLen,$pagesize=20){
         $this->pageNum=isset($_GET['p'])?$_GET['p']:1;
@@ -20,6 +20,8 @@ class CPage
         $this->pageSize=$pagesize;
 
         $this->pageCount=ceil($this->dataCount/$this->pageSize);
+        
+        if($this->pageCount==0)$this->pageCount=1;
         $this->pageUrl="http://".$_SERVER ['HTTP_HOST'].$_SERVER['PHP_SELF']."?".$_SERVER['QUERY_STRING'];
         $this->pageUrl=str_replace("&p=".$this->pageNum,"",$this->pageUrl);
     }
@@ -43,9 +45,8 @@ class CPage
                 if($this->pageNum!=$i){
                     $html.= "<li><a href='".$this->pageUrl."&p=".$i."'>".$i."</a></li>";
                 }else{
-                    $html.= "<li>$i</li>";
+                    $html.= "<li class=\"disabled\"><a>$i</a></li>";
                 }
-
 
             }
 
@@ -66,7 +67,7 @@ class CPage
                     if($this->pageNum!=$i){
                         $html.= "<li><a href='".$this->pageUrl."&p=".$i."'>".$i."</a></li>";
                     }else{
-                        $html.= "<li>$i</li>";
+                        $html.= "<li class=\"disabled\"><a>$i</a></li>";
                     }
                 }
 
@@ -85,7 +86,7 @@ class CPage
                     if($this->pageNum!=$i){
                         $html.= "<li><a href='".$this->pageUrl."&p=".$i."'>".$i."</a></li>";
                     }else{
-                        $html.= "<li>$i</li>";
+                        $html.= "<li class=\"disabled\"><a>$i</a></li>";
                     }
                 }
 
@@ -104,7 +105,7 @@ class CPage
                     if($this->pageNum!=$j){
                         $html.= "<li><a href='".$this->pageUrl."&p=".$j."'>".$j."</a></li>";
                     }else{
-                        $html.= "<li>$j</li>";
+                        $html.= "<li class=\"disabled\"><a>$j</a></li>";
                     }
                 }
 

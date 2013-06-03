@@ -36,29 +36,21 @@ class CApplication{
 	public function registerAutoLoad()
 	{
 		spl_autoload_register(array($this,"modelLoader"));
-		spl_autoload_register(array($this,"libLoader"));
         spl_autoload_register(array($this,"classLoader"));
 	}
-	
-	public function modelLoader($class)
-	{
-		$file=APP_PATH.'/model/'.$class.'.php';
-		if(is_file($file)){
-			include $file;
-		}
-	}
-	
-	public function libLoader($class)
-	{
-        $corePath=dirname(__FILE__);
-        $file=$corePath.'/lib/'.$class.'.php';
 
+	//加载model下的类，$class=命名空间+类名
+	public function modelLoader($class) 
+	{
+		$class=str_replace('\\', '/', $class);
+        $file=APP_PATH.'/model/'.$class.'.php';
         if(is_file($file))
         {
             include $file;
         }
 	}
-
+	
+	
     public function classLoader($class)
     {
         $file=APP_PATH.'/class/'.$class.'.php';
@@ -70,6 +62,11 @@ class CApplication{
 
     public function loadGlobalData(){
         $dir=APP_PATH."/global/";
+        foreach (glob($dir."*.php") as $file) {
+            include $file;
+        }
+
+        $dir=APP_PATH."/core/lib/";
         foreach (glob($dir."*.php") as $file) {
             include $file;
         }

@@ -12,12 +12,15 @@ class CMysql
 	
 	function __construct($dbcfg="db")
 	{
-		$app=CApplication::App();
-		$this->dbhost=$app->config["$dbcfg"]['host'];
-		$this->dbuser=$app->config["$dbcfg"]['username'];
-		$this->dbpasw=$app->config["$dbcfg"]['password'];
-		$this->dbname=$app->config["$dbcfg"]['dbname'];
-        $this->port=$app->config["$dbcfg"]['port'];
+        if(is_string($dbcfg)){
+            $dbcfg=CApplication::App()->config[$dbcfg];
+        }
+		
+		$this->dbhost=$dbcfg['host'];
+		$this->dbuser=$dbcfg['username'];
+		$this->dbpasw=$dbcfg['password'];
+		$this->dbname=$dbcfg['dbname'];
+        $this->port=$dbcfg['port'];
 
 		$dsn = "mysql:host=$this->dbhost;port=$this->port;dbname=$this->dbname";
 
@@ -97,7 +100,7 @@ class CMysql
         $this->db->commit();
     }
     //回滚事务
-    public function roolBack(){
+    public function rollBack(){
         $this->db->rollBack();
     }
 
@@ -113,9 +116,28 @@ class CMysql
         }
     }
 
+    //将查询结果以key value列形式返回
+    public function kvResult($result,$key,$value=''){
+        $res=array();
+        if(is_array($result)){
+            $res=$result;
+        }elseif(!empty($result)){
+            $res=$this->sqlquery($result);
+        }else{
+            return false;
+        }
 
+        $kvAry=array();
+        foreach ($res as $val) {
+            if($value==''){
+                $kvAry[$val["$key"]]=$val;
+            }else{
+                $kvAry[$val["$key"]]=$val["$value"];
+            }
+        }
 
-
+        return $kvAry;
+    }
 
 
 }

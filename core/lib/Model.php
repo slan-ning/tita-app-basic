@@ -6,8 +6,10 @@
  * Time: 下午1:44
  * To change this template use File | Settings | File Templates.
  */
-class Model extends CMysql
+class Model
 {
+    public $db;
+
     private $attributes;
     private $table;
     private $isNew=true;
@@ -19,19 +21,30 @@ class Model extends CMysql
     private $_where;
     private $_group;
 
-    public static function model($table)
+    public static function create($table,$dbname='')
     {
-        $model= new Model($table);
+        if(!empty($dbname)){
+            $model=new Model($table,$dbname);
+        }else{
+            $model= new Model($table);
+        }
+
         return $model;
     }
 
 
-    public function __construct($tablename){
-        parent::__construct();
+    public function __construct($tablename,$dbname=''){
+        $dbconfig=CApplication::App()->config['db'];
+
+        if(!empty($dbname)){
+            $dbconfig['dbname']=$dbname;
+        }
+
+        $this->db=new CMysql($dbconfig);
         $this->table=$tablename;
         //获得所有的字段
         $sql="desc `".$this->table."`";
-        $field=$this->sqlquery($sql);
+        $field=$this->db->sqlquery($sql);
 
         foreach($field as $val){
             $this->attributes[$val['Field']]=null;
@@ -51,14 +64,19 @@ class Model extends CMysql
             $groups=empty($this->_group)?'':('group by '.$this->_group);
 
             $sql="select $fields from `".$this->table."` $wheres $orders $groups $limits";
-
-            $data=$this->sqlquery($sql);
+            $this->_field='';
+            $this->_limit='';
+            $this->_where='';
+            $this->_order='';
+            $this->_group='';
+            
+            $data=$this->db->sqlquery($sql);
             return $data;
         }elseif(is_numeric($pk)){
             $fields=empty($this->_field)?'*':$this->_field;
             $wheres="where ".$this->prikey."=$pk";
             $sql="select $fields from `".$this->table."` $wheres ";
-            return $this->sqlqueryone($sql);
+            return $this->db->sqlqueryone($sql);
         }
     }
     /*
@@ -73,11 +91,14 @@ class Model extends CMysql
                 return false;
             }
             $sql="delete from `".$this->table."` $wheres $limits";
-            return $this->sqlexec($sql);
+            $this->_where='';
+            $this->_limit='';
+
+            return $this->db->sqlexec($sql);
         }elseif(is_numeric($pk)){
             $wheres="where ".$this->prikey."=$pk";
             $sql="delete from `".$this->table."` $wheres limit 1";
-            return $this->sqlexec($sql);
+            return $this->db->sqlexec($sql);
         }
 
     }
@@ -95,11 +116,15 @@ class Model extends CMysql
                 return false;
             }
             $sql="update `".$this->table."` set $sets $wheres $limits";
-            return $this->sqlexec($sql);
+
+            $this->_where='';
+            $this->_limit='';
+            
+            return $this->db->sqlexec($sql);
         }elseif(is_numeric($pk)){
             $wheres="where ".$this->prikey."=$pk";
             $sql="update `".$this->table."` set $sets $wheres limit 1";
-            return $this->sqlqueryone($sql);
+            return $this->db->sqlqueryone($sql);
         }
     }
 
@@ -116,7 +141,11 @@ class Model extends CMysql
 
         if($this->isNew){
             $sql="Insert into `".$this->table."` ($keys) values($values)";
-            return $this->sqlexec($sql);
+            $ret= $this->db->sqlexec($sql);
+            if($ret){
+                $this->prikey=$this->db->lastInsertId();
+            }
+            return $ret;
         }else{
             $upvalue="";
             $num=count($this->attributes);
@@ -131,7 +160,7 @@ class Model extends CMysql
                 if($i!=$num) $upvalue.=', ';
             }
             $sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$this->attributes[$this->prikey];
-            return $this->sqlexec($sql);
+            return $this->db->sqlexec($sql);
         }
     }
 
@@ -145,7 +174,7 @@ class Model extends CMysql
             $sql="select $keys from `".$this->table."` where $param limit 1";
         }
 
-        $data=$this->sqlqueryone($sql);
+        $data=$this->db->sqlqueryone($sql);
         if($data)
         {
             $this->isNew=false;
