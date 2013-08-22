@@ -19,7 +19,7 @@ class CView {
 		}
 	}
 
-    public function widget($func,$control=''){
+    public function widget($func,$control='', $paramAry = array()){
         $widgetControl=$this->control;
 
         if($control!=''){
@@ -30,13 +30,15 @@ class CView {
                 require(APP_PATH."/controller/".$controlName.".php");
                 $widgetControl=new $controlName($controlName,$func);
             }
-
         }
         $widgetControl->widgetPointer=$func;
         $func="widget".$func;
-
         if($widgetControl->beforeAction()){
-        	$widgetControl->$func();
+        	if(!empty($paramAry)){
+                call_user_func_array(array($widgetControl,$func),$paramAry);
+        	}else{
+        		$widgetControl->$func();
+        	}
         }
     }
 	
