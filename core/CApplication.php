@@ -21,26 +21,34 @@ class CApplication{
         $control=ucfirst($control)."Controller";
 		$action=strtolower(isset($_GET['a'])?$_GET['a']:'index');
 
-        $ctrl=new $control($control,$action);
-        if($ctrl->beforeAction()) {
-            $ctrl->$action();
+        if(!class_exists($control)) 
+        {
+            $file=APP_PATH.'/controller/'.$control.'.php';
+            if(is_file($file)) {
+                include $file;
+            }
         }
+
+        if (class_exists($control)) 
+        {
+            $ctrl=new $control($control,$action);
+            
+            if($ctrl->beforeAction()) {
+                $ctrl->$action();
+            }
+        }
+        else
+        {
+            header("Location: index.php?c=system&a=404");
+        }
+        
 
 	}
 	
 	public function registerAutoLoad() {
 		spl_autoload_register(array($this,"modelLoader"));
         spl_autoload_register(array($this,"classLoader"));
-        spl_autoload_register(array($this,"controllerLoader"));
 	}
-
-    public function controllerLoader($class)
-    {
-        $file=APP_PATH.'/controller/'.$class.'.php';
-        if(is_file($file)) {
-            include $file;
-        }
-    }
 
 	//加载model下的类，$class=命名空间+类名
 	public function modelLoader($class) {

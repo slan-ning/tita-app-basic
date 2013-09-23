@@ -15,7 +15,17 @@ class BaseController {
 	
 	function __call( $method, $arg_array ) {
 		$method="action".$method;
-		$this->$method();
+		if (method_exists($this,$method)) {
+			$this->$method();
+
+		}elseif ($this->action!='404') {
+			header("Location: index.php?c=system&a=404");
+		}
+		else{
+			header("HTTP/1.0 404 Not Found");
+			echo 'page not found!';
+		}
+		
 	}
 	
 	protected function assign($name,$value=''){
