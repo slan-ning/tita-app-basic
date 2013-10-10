@@ -7,8 +7,13 @@
  * 继承于控制器基类，用于实现一些自定义的控制器方法。
  */
 
-class Controller extends BaseController
+namespace common;
+
+use core\CController;
+
+class Controller extends CController
 {
+
     public function beforeAction()
     {
         return true;

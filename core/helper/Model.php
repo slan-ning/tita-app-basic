@@ -1,4 +1,7 @@
 <?php
+namespace core\helper;
+use core\CApplication;
+
 /**
  * Created by JetBrains PhpStorm.
  * User: 4lan
@@ -87,7 +90,7 @@ class Model
         if($pk==0){
             $wheres=empty($this->_where)?'':('where '.$this->_where);
             $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-            if($wheres==""&& $limits="" &&$sign=false){
+            if($wheres==""&& $limits="" &&$sign==false){
                 return false;
             }
             $sql="delete from `".$this->table."` $wheres $limits";
@@ -112,7 +115,7 @@ class Model
         if($pk==0){
             $wheres=empty($this->_where)?'':('where '.$this->_where);
             $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-            if($wheres==""&& $limits="" &&$sign=false){
+            if($wheres==""&& $limits="" &&$sign==false){
                 return false;
             }
             $sql="update `".$this->table."` set $sets $wheres $limits";
@@ -159,7 +162,8 @@ class Model
                 $upvalue.="`$key`=$v";
                 if($i!=$num) $upvalue.=', ';
             }
-            $sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$this->attributes[$this->prikey];
+            $prikey_val=is_numeric($this->attributes[$this->prikey]) ? $this->attributes[$this->prikey] : "'".$this->attributes[$this->prikey]."'";
+            $sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$prikey_val;
             return $this->db->sqlexec($sql);
         }
     }

@@ -1,4 +1,8 @@
-<?php 
+<?php
+namespace core\helper;
+
+use core\CApplication;
+
 class CMysql
 {
 	private $db;
@@ -25,8 +29,8 @@ class CMysql
 		$dsn = "mysql:host=$this->dbhost;port=$this->port;dbname=$this->dbname";
 
 		try{
-			$this->db=new PDO($dsn,$this->dbuser,$this->dbpasw);
-		}catch(PDOException $e){
+			$this->db=new \PDO($dsn,$this->dbuser,$this->dbpasw);
+		}catch(\PDOException $e){
 			echo '数据库连接失败:',$e->getMessage();
 		}
 		$this->db->query("set names utf8");
@@ -50,7 +54,7 @@ class CMysql
             return null;
         }
 
-        $result=$stmt->fetchAll(pdo::FETCH_ASSOC);
+        $result=$stmt->fetchAll(\pdo::FETCH_ASSOC);
         return $result;
     }
 
@@ -63,7 +67,7 @@ class CMysql
         {
             return null;
         }
-        $result=$stmt->fetch(pdo::FETCH_ASSOC);
+        $result=$stmt->fetch(\pdo::FETCH_ASSOC);
         return $result;
     }
 
@@ -84,11 +88,11 @@ class CMysql
     }
 
     public function bindIntParam($key,$val){
-        $this->stmt->bindParam($key,$val,PDO::PARAM_INT);
+        $this->stmt->bindParam($key,$val,\PDO::PARAM_INT);
     }
 
     public function bindStrParam($key,$val){
-        $this->stmt->bindParam($key,$val,PDO::PARAM_STR);
+        $this->stmt->bindParam($key,$val,\PDO::PARAM_STR);
     }
 
     //开始事务
@@ -118,7 +122,6 @@ class CMysql
 
     //将查询结果以key value列形式返回
     public function kvResult($result,$key,$value=''){
-        $res=array();
         if(is_array($result)){
             $res=$result;
         }elseif(!empty($result)){

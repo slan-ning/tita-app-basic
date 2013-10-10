@@ -1,4 +1,6 @@
-<?php 
+<?php
+namespace core;
+
 class CView {
 
 	private $parm=array();
@@ -19,19 +21,24 @@ class CView {
 		}
 	}
 
-    public function widget($func,$control='', $paramAry = array()){
+    public function widget($func,$control='', $paramAry = array(),$group=''){
         $widgetControl=$this->control;
 
         if($control!=''){
-            $controlName=ucfirst($control)."Controller";
+            $controlName= $group=='' ? '\controller\\'.$control : '\\'.$group.'\controller\\'.$control;
+
             $thisControllerName=get_class($this->control);
 
-            if($thisControllerName!=$controlName){
-                require(APP_PATH."/controller/".$controlName.".php");
-                $widgetControl=new $controlName($controlName,$func);
+            if($thisControllerName!=$controlName)
+            {
+
+                $widgetControl=new $controlName($group,$controlName,$func);
+
             }
         }
-        $widgetControl->widgetPointer=$func;
+
+        $widgetControl->widgetPointer=$func;//保存widget名称，用来定位widget模版
+
         $func="widget".$func;
         if($widgetControl->beforeAction()){
         	if(!empty($paramAry)){
@@ -42,16 +49,22 @@ class CView {
         }
     }
 	
-	public function display($tpl,$classname,$lay){
+	public function display($group,$tpl,$classname,$lay){
+        $tplPath=$group==''?APP_PATH."/view/":APP_PATH.'/'.$group."/view/";
+
 		ob_start();
 		extract($this->parm,EXTR_OVERWRITE );
-        if(is_file(APP_PATH."/view/$classname/$tpl.php"))
-		    include APP_PATH."/view/$classname/$tpl.php";
+
+        ///加载模版文件
+        if(is_file($tplPath."$classname/$tpl.php"))
+		    include $tplPath."$classname/$tpl.php";
+
 		$buffer = ob_get_contents(); 
 		ob_end_clean(); 
 
-		if($lay!=""&&is_file(APP_PATH."/view/layout/$lay.php")){
-			include APP_PATH."/view/layout/$lay.php";
+        //加载布局文件
+		if($lay!=""&&is_file($tplPath."layout/$lay.php")){
+			include $tplPath."layout/$lay.php";
 		}else{
 			echo $buffer;
 		}

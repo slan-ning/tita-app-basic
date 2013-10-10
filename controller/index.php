@@ -6,10 +6,12 @@
  * Time: 上午11:49
  * To change this template use File | Settings | File Templates.
  */
-class IndexController extends Controller
+namespace controller;
+
+class index extends Controller
 {
     public function actionIndex(){
-        echo 'meltsnow is a funny frame</br>';
-        $this->display();
+
+        echo 'tita framework';
     }
 }

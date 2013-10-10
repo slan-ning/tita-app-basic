@@ -1,4 +1,5 @@
 <?php
+namespace core\helper;
 /**
  * Created by JetBrains PhpStorm.
  * User: Administrator
