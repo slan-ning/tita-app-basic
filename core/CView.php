@@ -25,7 +25,7 @@ class CView {
         $widgetControl=$this->control;
 
         if($control!=''){
-            $controlName= $group=='' ? '\controller\\'.$control : '\\'.$group.'\controller\\'.$control;
+            $controlName= $group=='' ? 'controller\\'.$control : $group.'\controller\\'.$control;
 
             $thisControllerName=get_class($this->control);
 
@@ -49,22 +49,22 @@ class CView {
         }
     }
 	
-	public function display($group,$tpl,$classname,$lay){
-        $tplPath=$group==''?APP_PATH."/view/":APP_PATH.'/'.$group."/view/";
+	public function display($group_,$tpl_,$classname_,$lay_){
+        $tplPath_=$group_==''?APP_PATH."/view/":APP_PATH.'/'.$group_."/view/";
 
 		ob_start();
 		extract($this->parm,EXTR_OVERWRITE );
 
         ///加载模版文件
-        if(is_file($tplPath."$classname/$tpl.php"))
-		    include $tplPath."$classname/$tpl.php";
+        if(is_file($tplPath_."$classname_/$tpl_.php"))
+		    include $tplPath_."$classname_/$tpl_.php";
 
 		$buffer = ob_get_contents(); 
 		ob_end_clean(); 
 
         //加载布局文件
-		if($lay!=""&&is_file($tplPath."layout/$lay.php")){
-			include $tplPath."layout/$lay.php";
+		if($lay_!=""&&is_file($tplPath_."layout/$lay_.php")){
+			include $tplPath_."layout/$lay_.php";
 		}else{
 			echo $buffer;
 		}

@@ -82,6 +82,42 @@ class Model
             return $this->db->sqlqueryone($sql);
         }
     }
+
+    public function sum($key)
+    {
+        $wheres=empty($this->_where)?'':('where '.$this->_where);
+        $limits=empty($this->_limit)?'':('limit '.$this->_limit);
+        $orders=empty($this->_order)?'':('order by '.$this->_order);
+        $groups=empty($this->_group)?'':('group by '.$this->_group);
+
+        $sql="select sum($key) from `".$this->table."` $wheres $orders $groups $limits";
+
+        $this->_limit='';
+        $this->_where='';
+        $this->_order='';
+        $this->_group='';
+
+        $data=$this->db->sqlqueryscalar($sql);
+        return $data;
+    }
+
+    public function count(){
+        $wheres=empty($this->_where)?'':('where '.$this->_where);
+        $limits=empty($this->_limit)?'':('limit '.$this->_limit);
+        $orders=empty($this->_order)?'':('order by '.$this->_order);
+        $groups=empty($this->_group)?'':('group by '.$this->_group);
+
+        $sql="select count(1) from `".$this->table."` $wheres $orders $groups $limits";
+
+        $this->_limit='';
+        $this->_where='';
+        $this->_order='';
+        $this->_group='';
+
+        $data=$this->db->sqlqueryscalar($sql);
+        return $data;
+    }
+
     /*
      * 数据记录删除函数，调用需加where以及limit连贯操作  ，如删除全表，请设置参数sign为true
      * 如未加连贯操作，并且sign为false，则不删除全表，直接返回false。
@@ -168,7 +204,12 @@ class Model
         }
     }
 
-    //根据条件获得一个实例
+    /**
+     * 根据条件获得一个实例
+     * @param $param
+     *
+     * @return $this|bool
+     */
     public function find($param){
         $keys="`".implode("`,`",array_keys($this->attributes))."`";
         if(is_numeric($param))
@@ -208,6 +249,12 @@ class Model
         return isset($this->attributes[$name]);
     }
 
+    /**
+     * @param $method
+     * @param $args
+     *
+     * @return $this
+     */
     public function __call($method,$args) {
         if(in_array(strtolower($method),array('where','order','limit','group','field'),true)) {
             $method='_'.$method;
