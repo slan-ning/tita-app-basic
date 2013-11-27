@@ -22,6 +22,11 @@ class Tita {
         return substr($_SERVER['SCRIPT_NAME'],0,strrpos($_SERVER['SCRIPT_NAME'],"/")+1);
     }
 
+    public static function entry()
+    {
+        return $_SERVER['SCRIPT_NAME'];
+    }
+
 
 
 }
