@@ -234,5 +234,25 @@ class CMysql
         }
     }
 
+    /**
+     * @desc 重新链接
+     */
+    public function ping(){
+        unset($this->db);
+        $dsn = "mysql:host=$this->dbhost;port=$this->port;dbname=$this->dbname";
+        try{
+            $this->db = new PDO($dsn,$this->dbuser,$this->dbpasw,array(PDO::ATTR_PERSISTENT => true));
+        }catch (PDOException $e){
+            echo '数据库连接失败:',$e->getMessage();
+        }
+        $this->db->query("set names utf8");
+    }
+
+    /**
+     * @desc 关闭数据库长连接
+     */
+    public function closedb(){
+        unset($this->db);
+    }
 
 }

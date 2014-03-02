@@ -16,18 +16,23 @@ class CPage
     public $pageCount; //页面数
     public $pageUrl;
 
-    function __construct($dataLen, $pagesize = 20)
+    function __construct($dataLen, $pagesize = 20,$pageUrl='')
     {
         $this->pageNum   =intval($_GET['p'])>0 ? intval($_GET['p']) : 1;
-        $this->dataCount = $dataLen;
-        $this->pageSize  = $pagesize;
+        $this->dataCount = intval($dataLen);
+        $this->pageSize  = intval($pagesize);
 
         $this->pageCount = ceil($this->dataCount / $this->pageSize);
 
         if ($this->pageCount == 0) {
             $this->pageCount = 1;
         }
-        $this->pageUrl = "http://" . $_SERVER ['HTTP_HOST'] . $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'];
+        if($pageUrl==''){
+            $this->pageUrl = "http://" . $_SERVER ['HTTP_HOST'] . $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'];
+        }else{
+            $this->pageUrl=$pageUrl;
+        }
+
         $this->pageUrl = str_replace("&p=" . $this->pageNum, "", $this->pageUrl);
     }
 

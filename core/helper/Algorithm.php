@@ -10,26 +10,29 @@
 namespace core\helper;
 
 
-class Algorithm {
+class Algorithm
+{
 
     /**
-     * @param $arr 要转换的数组
-     * @param $key 要转换的key
-     * @param string $value 对应值的键
-     * @return array
-     *
      * 将行列数组，其中的两列，对应成key=>value形式返回，如果没知名$value的值
      * 则返回 key=>这一行的数据
+     *
+     * @param        $arr   要转换的数组
+     * @param        $key   要转换的key
+     * @param string $value 对应值的键
+     *
+     * @return array
      */
-    public static function kvResult($arr,$key,$value=''){
+    public static function kvResult($arr, $key, $value = '')
+    {
 
-        $kvAry=array();
+        $kvAry = array();
 
-        foreach ($arr as $val) {
-            if($value==''){
-                $kvAry[$val["$key"]]=$val;
-            }else{
-                $kvAry[$val["$key"]]=$val["$value"];
+        foreach ((array)$arr as $val) {
+            if ($value == '') {
+                $kvAry[$val["$key"]] = $val;
+            } else {
+                $kvAry[$val["$key"]] = $val["$value"];
             }
         }
 
@@ -38,18 +41,46 @@ class Algorithm {
 
 
     /**
-     * @param $key 检索数组的key
-     * @param array $arr 检索数组
-     * @return array|mixed 检索数组中 key的所有值
-     *
      * 深度遍历一个数组，将所有键名为$key的值合并返回。
+     * @param       $key 检索数组的key
+     * @param array $arr 检索数组
+     *
+     * @return array|mixed 检索数组中 key的所有值
      */
-    public static function array_value_recursive($key, array $arr){
+    public static function array_value_recursive($key, array $arr)
+    {
         $val = array();
-        array_walk_recursive($arr, function($v, $k) use($key, &$val){
-            if($k == $key) array_push($val, $v);
-        });
+        array_walk_recursive(
+            $arr, function ($v, $k) use ($key, &$val) {
+                if ($k == $key) {
+                    array_push($val, $v);
+                }
+            }
+        );
         return count($val) > 1 ? $val : array_pop($val);
+    }
+
+
+    /**
+     * 生成一个树(调用部分)
+     * @param $arr       输入数组
+     * @param $parentKey 父id的键名 如:pid
+     * @param $level     当前深度
+     *
+     * @return array
+     */
+    public static function array_build_tree($arr, $parentKey,$level=0)
+    {
+        $ret = array();
+        foreach ($arr as $k => $v) {
+            if ($v[$parentKey] == $level) {
+                $tmp = $arr[$k];
+                unset($arr[$k]);
+                $tmp['child'] = self::array_build_tree($arr, $parentKey, $v['id']);
+                $ret[] = $tmp;
+            }
+        }
+        return $ret;
     }
 
 }

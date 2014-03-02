@@ -12,6 +12,8 @@ namespace core;
 
 class Tita {
 
+    private static $clientScript;
+
     public static function app()
     {
         return CApplication::App();
@@ -25,6 +27,20 @@ class Tita {
     public static function entry()
     {
         return $_SERVER['SCRIPT_NAME'];
+    }
+
+    public static function register_script($src)
+    {
+        self::$clientScript[]=$src;
+    }
+
+    public static function client_script()
+    {
+        $str='';
+        foreach (self::$clientScript as $script) {
+            $str.= $script."\n";
+        }
+        return $str;
     }
 
 

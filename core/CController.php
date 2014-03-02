@@ -42,6 +42,12 @@ class CController {
 
     protected function widgetDisplay($tpl=''){
         $tplname=($tpl=='')?$this->widgetPointer:$tpl;
+
+        //支持直接调用widget，不放在控制器内
+        if($tplname==''){
+            $tplname=strReplace('widget','',$this->action_);
+        }
+
         $classname=substr($this->control_,strrpos($this->control_,'\\')+1);
         $this->view_->display($this->group_,$tplname,$classname,'');
     }

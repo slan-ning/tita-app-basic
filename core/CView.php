@@ -12,7 +12,7 @@ class CView {
 	}
 	
 	public function assign($name,$value){
-		if (is_array($name)) { 
+		if (is_array($name)) {
 			foreach ($name as $key => $val) { 
 				$this->parm[$key] = $val; 
 			}	 
