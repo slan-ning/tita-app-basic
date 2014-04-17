@@ -4,7 +4,7 @@
  * User: Administrator
  * Date: 12-12-26
  * Time: 上午11:39
- * Tita 框架 入
+ * Tita 框架 入口
  */
 ini_set('display_errors','On');
 error_reporting(E_ALL);
