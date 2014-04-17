@@ -4,12 +4,12 @@ namespace core;
 class CController {
 	protected $view_;
     protected $group_;
-	protected $control_;
-	protected $action_;
-	protected $layout="main";
+    protected $control_;
+    protected $action_;
+    protected $layout="main";
     public $widgetPointer='';
-	
-	function __construct($group,$control,$action){
+
+    function __construct($group,$control,$action){
 		$this->control_=$control;
 		$this->action_=$action;
 		$this->view_=new CView($this);

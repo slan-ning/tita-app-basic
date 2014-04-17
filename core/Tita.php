@@ -16,7 +16,7 @@ class Tita {
 
     public static function app()
     {
-        return CApplication::App();
+        return CApplication::app();
     }
 
     public static function baseUrl()

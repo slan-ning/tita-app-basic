@@ -36,7 +36,7 @@ class CMysql
     function __construct($dbcfg = "db")
     {
         if (is_string($dbcfg)) {
-            $dbcfg = CApplication::App()->config[$dbcfg];
+            $dbcfg = CApplication::app()->config[$dbcfg];
         }
 
         $this->dbhost = $dbcfg['host'];

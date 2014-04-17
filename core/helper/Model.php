@@ -37,7 +37,7 @@ class Model
 
 
     public function __construct($tablename,$dbname=''){
-        $dbconfig=CApplication::App()->config['db'];
+        $dbconfig=CApplication::app()->config['db'];
 
         if(!empty($dbname)){
             $dbconfig['dbname']=$dbname;
