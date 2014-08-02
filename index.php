@@ -11,7 +11,7 @@
 
 //session_start();
 header('Content-Type: text/html;charset=utf-8');
-define('APP_PATH',dirname(__FILE__));//melt base dir
+define('APP_PATH',dirname(__FILE__));//app base dir
 require APP_PATH . '/core/Core.php';//加载框架核心
 
 $app=\core\Tita::App();
