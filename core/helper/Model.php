@@ -75,7 +75,7 @@ class Model
             
             $data=$this->db->sqlquery($sql);
             return $data;
-        }elseif(is_numeric($pk)){
+        }elseif(is_int($pk) || ctype_digit($pk)){
             $fields=empty($this->_field)?'*':$this->_field;
             $wheres="where ".$this->prikey."=$pk";
             $sql="select $fields from `".$this->table."` $wheres ";
@@ -134,7 +134,7 @@ class Model
             $this->_limit='';
 
             return $this->db->sqlexec($sql);
-        }elseif(is_numeric($pk)){
+        }elseif(is_int($pk) || ctype_digit($pk)){
             $wheres="where ".$this->prikey."=$pk";
             $sql="delete from `".$this->table."` $wheres limit 1";
             return $this->db->sqlexec($sql);
@@ -160,7 +160,7 @@ class Model
             $this->_limit='';
             
             return $this->db->sqlexec($sql);
-        }elseif(is_numeric($pk)){
+        }elseif(is_int($pk) || ctype_digit($pk)){
             $wheres="where ".$this->prikey."=$pk";
             $sql="update `".$this->table."` set $sets $wheres limit 1";
             return $this->db->sqlqueryone($sql);
@@ -172,9 +172,10 @@ class Model
 
         $vals=array_values($this->attributes);
         foreach($vals as &$v){
-            if(!is_numeric($v)){
-                $v='\''.$v.'\'';
-            }
+        	if(!(is_int($v)) && !(ctype_digit($v))){
+        		//$v='\''.$v.'\'';
+                $v = '\'' . str_replace("'", "\'", $v) . '\'';
+        	}
         }
         $values=implode(',',$vals);
 
@@ -192,15 +193,16 @@ class Model
             foreach($this->attributes as $key=>$v){
                 $i++;
                 if($this->prikey==$key) continue;
-                if(!is_numeric($v)){
-                    $v='\''.$v.'\'';
+                if(!(is_int($v)) && !(ctype_digit($v))){
+                    //$v='\''.$v.'\'';
+                    $v = '\'' . str_replace("'", "\'", $v) . '\'';
                 }
                 $upvalue.="`$key`=$v";
                 if($i!=$num) $upvalue.=', ';
             }
-            $prikey_val=is_numeric($this->attributes[$this->prikey]) ? $this->attributes[$this->prikey] : "'".$this->attributes[$this->prikey]."'";
-            $sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$prikey_val;
-            return $this->db->sqlexec($sql);
+            $prikey_val=(is_int($this->attributes[$this->prikey])) || (ctype_digit($this->attributes[$this->prikey])) ? $this->attributes[$this->prikey] : "'".$this->attributes[$this->prikey]."'";
+           	$sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$prikey_val;
+			return $this->db->sqlexec($sql);
         }
     }
 
@@ -212,7 +214,7 @@ class Model
      */
     public function find($param){
         $keys="`".implode("`,`",array_keys($this->attributes))."`";
-        if(is_numeric($param))
+        if(is_int($param) || ctype_digit($param))
         {
             $sql="select $keys from `".$this->table."` where ".$this->prikey."=$param";
         }else{

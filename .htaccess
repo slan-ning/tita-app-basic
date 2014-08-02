@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^(\w*)/(\w*).php$ index.php?g=$1&c=$2 [L,QSA]
+RewriteRule ^(\w*).php$ index.php?c=$1 [L,QSA]
+RewriteRule ^(\w*)/$ index.php?g=$1 [L,QSA]
+
+</IfModule>

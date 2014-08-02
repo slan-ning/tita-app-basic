@@ -6,8 +6,8 @@
  * Time: 上午11:39
  * Tita 框架 入口
  */
-ini_set('display_errors','On');
-error_reporting(E_ALL);
+//ini_set('display_errors','On');
+//error_reporting(E_ALL);
 
 //session_start();
 header('Content-Type: text/html;charset=utf-8');

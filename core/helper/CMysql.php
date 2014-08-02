@@ -31,7 +31,10 @@ class CMysql
 
     /**
      * 构造函数。
+     *
      * @param string|array $dbcfg 直接传config.php中的数据库配置key，或者数据库配置数组
+     *
+     * @throws \Exception
      */
     function __construct($dbcfg = "db")
     {
@@ -50,7 +53,7 @@ class CMysql
         try {
             $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw);
         } catch (\PDOException $e) {
-            echo '数据库连接失败:', $e->getMessage();
+            throw new \Exception( '数据库连接失败:', $e->getMessage());
         }
         $this->db->query("set names utf8");
 
@@ -174,7 +177,8 @@ class CMysql
      */
     public function commit()
     {
-        $this->db->commit();
+        if($this->db->inTransaction())
+            $this->db->commit();
     }
 
     /**
@@ -182,7 +186,8 @@ class CMysql
      */
     public function rollBack()
     {
-        $this->db->rollBack();
+        if($this->db->inTransaction())
+            $this->db->rollBack();
     }
 
     /**
@@ -232,20 +237,6 @@ class CMysql
         if (in_array($method, array('errorCode', 'errorInfo', 'execute', 'rowCount'))) {
             return call_user_func_array(array($this->stmt, $method), $args);
         }
-    }
-
-    /**
-     * @desc 重新链接
-     */
-    public function ping(){
-        unset($this->db);
-        $dsn = "mysql:host=$this->dbhost;port=$this->port;dbname=$this->dbname";
-        try{
-            $this->db = new PDO($dsn,$this->dbuser,$this->dbpasw,array(PDO::ATTR_PERSISTENT => true));
-        }catch (PDOException $e){
-            echo '数据库连接失败:',$e->getMessage();
-        }
-        $this->db->query("set names utf8");
     }
 
     /**

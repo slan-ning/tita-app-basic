@@ -2,13 +2,10 @@
 
 return array(
     'db' => array(
-        'dbname' => 'xilinshop',
+        'dbname' => 'test',
         'username' => 'root',
-        'password' => '123',
+        'password' => '',
         'host' => 'localhost',
         'port' => '3306',
-    ),
-    'nodejsip' => "117.79.239.107:1955",
-    'operatesDir'=>"/usr/operates"
-
+    )
 );
