@@ -53,7 +53,7 @@ class CMysql
         try {
             $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw);
         } catch (\PDOException $e) {
-            throw new \Exception( '数据库连接失败:', $e->getMessage());
+            throw new \Exception( '数据库连接失败:'. $e->getMessage());
         }
         $this->db->query("set names utf8");
 
