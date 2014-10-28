@@ -1,6 +1,8 @@
 <?php
 namespace core;
 
+use core\helper\db\DB;
+
 class CView {
 
 	private $parm=array();
@@ -21,7 +23,7 @@ class CView {
 		}
 	}
 
-    public function widget($func,$control='', $paramAry = array(),$group=''){
+    public function widget($func, $control='', $paramAry = array(), $group=''){
         $widgetControl=$this->control;
 
         if($control!=''){
@@ -42,9 +44,9 @@ class CView {
         $func="widget".$func;
         if($widgetControl->beforeAction()){
         	if(!empty($paramAry)){
-                call_user_func_array(array($widgetControl,$func),$paramAry);
+                return call_user_func_array(array($widgetControl,$func),$paramAry);
         	}else{
-        		$widgetControl->$func();
+        		return $widgetControl->$func();
         	}
         }
     }
@@ -70,6 +72,7 @@ class CView {
 		}
 		
 	}
+
 
     public function __get($var){
         return $this->control->$var;

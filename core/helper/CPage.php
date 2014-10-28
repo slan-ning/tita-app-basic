@@ -82,8 +82,10 @@ class CPage
         $page = array();
 
         for ($i = $start; $i <= $end; $i++) {
-            $page[] = array('url'     => $this->pageUrl . '$p=' . $i, 'number' => $i,
-                            'current' => $i == $this->pageNum ? true : false);
+            $page[] = array('url'     => $this->pageUrl . '&p=' . $i,
+                            'number' => $i,
+                            'current' => $i == $this->pageNum ? true : false
+            );
         }
 
         return $page;

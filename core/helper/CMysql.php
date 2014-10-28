@@ -177,8 +177,10 @@ class CMysql
      */
     public function commit()
     {
-        if($this->db->inTransaction())
-            $this->db->commit();
+        if($this->db->inTransaction()){
+            return $this->db->commit();
+        }
+
     }
 
     /**
@@ -186,8 +188,10 @@ class CMysql
      */
     public function rollBack()
     {
-        if($this->db->inTransaction())
-            $this->db->rollBack();
+        if($this->db->inTransaction()){
+            return $this->db->rollBack();
+        }
+
     }
 
     /**

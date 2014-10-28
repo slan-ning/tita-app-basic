@@ -45,7 +45,7 @@ class CController {
 
         //支持直接调用widget，不放在控制器内
         if($tplname==''){
-            $tplname=strReplace('widget','',$this->action_);
+            $tplname=str_replace('widget','',$this->action_);
         }
 
         $classname=substr($this->control_,strrpos($this->control_,'\\')+1);

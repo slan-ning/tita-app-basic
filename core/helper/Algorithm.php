@@ -45,7 +45,7 @@ class Algorithm
      * @param string $key 检索数组的key
      * @param array  $arr 检索数组
      *
-     * @return array|mixed 检索数组中 key的所有值
+     * @return array 检索数组中 key的所有值
      */
     public static function array_value_recursive($key, array $arr)
     {
@@ -57,7 +57,7 @@ class Algorithm
                 }
             }
         );
-        return count($val) > 1 ? $val : array_pop($val);
+        return $val;
     }
 
 
