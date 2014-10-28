@@ -1,1 +1,1 @@
-<?php echo $buffer;?>
+<?php echo $buffer;
