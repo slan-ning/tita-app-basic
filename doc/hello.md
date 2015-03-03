@@ -39,5 +39,7 @@ hello <?php echo $data;?>
 </body>
 </html>
 ```
-4. 访问http://项目地址/index.php?c=hello&a=index 
+访问http://项目地址/index.php?c=hello&a=index 
+
+这时你能看见页面上出现 hello world 这几个字了
 
