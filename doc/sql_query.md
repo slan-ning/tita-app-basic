@@ -14,13 +14,13 @@ PRIMARY KEY (`id`)
 ```
 
 ###原生PDO
-1. 插入
+* 插入
 ```php
 $mysql =new \core\helper\db\CMysql();
 $mysql->sqlexec("insert into USER VALUE (null,'4lan','翟四岚')");
 ```
 
-2. 查询
+* 查询
 ```php
 $mysql =new \core\helper\db\CMysql();
 $mysql->sqlqueryone("select * from user where username='4lan'");//查询一条
@@ -36,12 +36,12 @@ $nick=$mysql->sqlqueryscalar("select nick from user where username='4lan'");//�
 
 文档地址: [http://www.golaravel.com/laravel/docs/5.0/queries/](http://www.golaravel.com/laravel/docs/5.0/queries/)
 
-1. 插入
+* 插入
 ```php
 \core\helper\db\DB::connection()->table('user')->insert(['id'=>null,'username'=>'4lan','nick'=>'翟四岚']);
 ```
 
-2. 查询
+* 查询
 ```php
 \core\helper\db\DB::connection()->table('user')->where('id','>',1)->get();//返回大于1的记录
 ```
