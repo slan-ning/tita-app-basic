@@ -21,27 +21,4 @@ tita是一个简单的php框架，提供了基本的mvc分层功能，以及一�
 ###demo
 [hello world](doc/hello.md)
 
-[简单数据库查询](doc/sql_query.md) (待完善)
-
-[留言板](doc/guest_book.md) (待完善)
-
-###控制器(待完善)
-[点击查看](doc/controller.md) 
-
-###数据库操作 (待完善)
-[点击查看](doc/mysql.md) 
-
-###Model,包约定(待完善)
-[点击查看](doc/model.md)
-
-###view 视图(待完善)
-[点击查看](doc/view.md)
-
-###composer 如何引入第三方库(待完善)
-[点击查看](doc/composer.md)
-
-###提供的一些helper class(待完善)
-[点击查看](doc/helper.md)
-
-###路径以及url(待完善)
-[点击查看](doc/url.md)
+[简单数据库查询](doc/sql_query.md) 
